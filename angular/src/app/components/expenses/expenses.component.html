@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <h2>Expenses</h2>
+  
+  <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" class="mb-4">
+    <div class="row">
+      <div class="col-md-3">
+        <select class="form-select" formControlName="category_id">
+          <option value="">Select Category</option>
+          <option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <input type="date" class="form-control" formControlName="date">
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" formControlName="cost" placeholder="Cost">
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-primary me-2">
+          {{ editingExpense ? 'Update' : 'Add' }} Expense
+        </button>
+        <button *ngIf="editingExpense" type="button" class="btn btn-secondary" (click)="resetForm()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Category</th>
+          <th>Date</th>
+          <th>Cost</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let expense of expenses">
+          <td>{{ expense.id }}</td>
+          <td>{{ expense.category_name }}</td>
+          <td>{{ expense.date | date }}</td>
+          <td>{{ expense.cost | currency }}</td>
+          <td>
+            <button class="btn btn-sm btn-info me-2" (click)="editExpense(expense)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteExpense(expense.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

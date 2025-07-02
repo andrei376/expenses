@@ -1,0 +1,36 @@
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    dns:
+      - 8.8.4.4
+      - 8.8.8.8
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=expenses_db
+      - API_KEY=your-secret-api-key
+    depends_on:
+      - db
+#    volumes:
+#      - ./:/app
+#      - node_modules:/app/node_modules
+
+  db:
+    image: mariadb:11.8.2
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=expenses_db
+#    ports:
+#      - "3306:3306"
+    volumes:
+      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:

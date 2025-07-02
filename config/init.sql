@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS categories (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS expenses (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  category_id INT NOT NULL,
+  date DATE NOT NULL,
+  cost DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (category_id) REFERENCES categories(id)
+);

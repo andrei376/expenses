@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Expense Summary</h2>
+    </div>
+    <div class="card-body">
+      <!-- Year Selection -->
+      <div class="btn-group mb-4">
+        <button *ngFor="let year of years"
+                class="btn"
+                [class.btn-primary]="selectedYear === year"
+                [class.btn-outline-primary]="selectedYear !== year"
+                (click)="selectYear(year)">
+          {{ year }}
+        </button>
+      </div>
+
+      <!-- Month Selection -->
+      <div class="btn-group mb-4 d-flex flex-wrap">
+        <button *ngFor="let month of months; let i = index"
+                class="btn"
+                [class.btn-primary]="selectedMonth === i"
+                [class.btn-outline-primary]="selectedMonth !== i"
+                (click)="selectMonth(i)">
+          {{ month }}
+        </button>
+        <button class="btn"
+                [class.btn-primary]="selectedMonth === null"
+                [class.btn-outline-primary]="selectedMonth !== null"
+                (click)="selectMonth(null)">
+          Entire Year
+        </button>
+      </div>
+
+      <!-- Summary Table -->
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th class="text-end">Transactions</th>
+              <th class="text-end">Total Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="selectedMonth !== null; else yearSummary">
+              <tr *ngFor="let item of getMonthData()">
+                <td>{{ item.category }}</td>
+                <td class="text-end">{{ item.transactionCount }}</td>
+                <td class="text-end">{{ item.totalCost | currency }}</td>
+              </tr>
+            </ng-container>
+            <ng-template #yearSummary>
+              <tr *ngFor="let item of getYearData()">
+                <td>{{ item.category }}</td>
+                <td class="text-end">{{ item.transactionCount }}</td>
+                <td class="text-end">{{ item.totalCost | currency }}</td>
+              </tr>
+            </ng-template>
+          </tbody>
+          <tfoot>
+            <tr class="table-primary">
+              <td><strong>Total</strong></td>
+              <td></td>
+              <td class="text-end"><strong>{{ totalForPeriod | currency }}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

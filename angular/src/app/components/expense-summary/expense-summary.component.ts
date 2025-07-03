@@ -16,7 +16,8 @@ interface GroupedExpenses {
 @Component({
   selector: 'app-expense-summary',
   templateUrl: './expense-summary.component.html',
-  styleUrls: ['./expense-summary.component.scss']
+  styleUrls: ['./expense-summary.component.scss'],
+  standalone: false
 })
 export class ExpenseSummaryComponent implements OnInit {
   groupedExpenses: GroupedExpenses = {};
@@ -62,7 +63,7 @@ export class ExpenseSummaryComponent implements OnInit {
 
     let total = 0;
     const yearData = this.groupedExpenses[this.selectedYear];
-    
+
     if (this.selectedMonth !== null) {
       // Calculate total for specific month
       const monthData = yearData[this.selectedMonth];
@@ -75,7 +76,7 @@ export class ExpenseSummaryComponent implements OnInit {
         total += monthData.reduce((sum, item) => sum + item.totalCost, 0);
       });
     }
-    
+
     this.totalForPeriod = total;
   }
 
@@ -86,7 +87,7 @@ export class ExpenseSummaryComponent implements OnInit {
 
   getYearData(): ExpenseSummary[] {
     if (!this.selectedYear) return [];
-    
+
     const yearData = this.groupedExpenses[this.selectedYear];
     const combinedData: { [category: string]: ExpenseSummary } = {};
 
